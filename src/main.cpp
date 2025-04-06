@@ -60,6 +60,6 @@ int main(){
  
          DrawText("NEON DEPTHS", 10, 10, 20, DARKPURPLE); // Title
  
-        EndDrawing();   
+        EndDrawing();   //all drawing commands are done here
     }
 }
