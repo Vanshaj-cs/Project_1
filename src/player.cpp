@@ -11,14 +11,15 @@ void InitPlayer(Player &player) {
 
 void UpdatePlayer(Player &player, float dt) {
     const float gravity = 800.0f;
-    const float jumpForce = -350.0f;
+    const float jumpForce = -450.0f;
     const float moveSpeed = 200.0f;
 
-    // Movement input
+    // Horizontal input
     if (IsKeyDown(KEY_LEFT)) player.velocity.x = -moveSpeed;
     else if (IsKeyDown(KEY_RIGHT)) player.velocity.x = moveSpeed;
     else player.velocity.x = 0;
 
+    // Jump
     if (IsKeyPressed(KEY_SPACE) && player.onGround) {
         player.velocity.y = jumpForce;
         player.onGround = false;
@@ -26,11 +27,7 @@ void UpdatePlayer(Player &player, float dt) {
 
     // Apply gravity
     player.velocity.y += gravity * dt;
-
-    // Move
-    player.position.x += player.velocity.x * dt;
-    player.position.y += player.velocity.y * dt;
-}
+}    
 
 void DrawPlayer(const Player &player) {
     DrawRectangle((int)player.position.x, (int)player.position.y, player.width, player.height, BLACK);
