@@ -5,9 +5,12 @@
 #include "globals.h"
 #include "player.h"
 
-extern int level[MAP_HEIGHT][MAP_WIDTH];
+void InitLevel();
+
+void UpdateLevel(Player &player);
 
 void DrawLevel();
+
 void CheckPlayerCollision(Player &player);
 
 #endif

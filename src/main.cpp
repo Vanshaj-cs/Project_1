@@ -20,6 +20,7 @@ int main() {
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
 
+        UpdateLevel(player);
         UpdatePlayer(player, dt);
         CheckPlayerCollision(player);
 
