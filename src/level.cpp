@@ -26,7 +26,6 @@ void InitLevel() {
 void UpdateLevel(Player &player) {
     float screenRight = player.position.x + 800;
 
-    // Start after the last platform if any, else from 0
     float lastX = 0;
     if (platformCount > 0) {
         Platform last = platforms[platformCount - 1];
@@ -34,23 +33,38 @@ void UpdateLevel(Player &player) {
     }
 
     while (lastX < screenRight && platformCount < MAX_PLATFORMS) {
-        bool makeGap = GetRandomValue(0, 100) < 20; // 20% chance for a gap
+        bool makeGap = GetRandomValue(0, 100) < 20;
 
         if (makeGap) {
-            // Small, jumpable gap
             const float MIN_GAP = TILE_SIZE * 1.5f;
             const float MAX_GAP = TILE_SIZE * 2.5f;
             float gapWidth = GetRandomValue((int)MIN_GAP, (int)MAX_GAP);
             lastX += gapWidth;
         }
 
-        // Add a platform after the (optional) gap
-        platforms[platformCount++] = (Platform){
-            { lastX, platformY, platformWidth, TILE_SIZE }
-        };
+        bool placedElevated = false;
+
+        // 30% chance to spawn elevated platform
+        if (GetRandomValue(0, 100) < 30) {
+            int elevation = GetRandomValue(2, 4); // tiles higher
+            float elevatedY = platformY - elevation * TILE_SIZE;
+
+            platforms[platformCount++] = (Platform){
+                { lastX, elevatedY, platformWidth, TILE_SIZE }
+            };
+            placedElevated = true;
+        }
+
+        // Only place ground if no elevated platform above it
+        if (!placedElevated) {
+            platforms[platformCount++] = (Platform){
+                { lastX, platformY, platformWidth, TILE_SIZE }
+            };
+        }
+
         lastX += platformWidth;
     }
-}
+}    
 void DrawLevel() {
     for (int i = 0; i < platformCount; i++) {
         DrawRectangleRec(platforms[i].rect, DARKPURPLE);
